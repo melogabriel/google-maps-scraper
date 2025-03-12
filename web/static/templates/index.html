@@ -132,6 +132,36 @@
                     </tbody>
                 </table>
             </div>
+            <div class="content">
+    <h2>Execution Logs</h2>
+    <div id="logs-container" class="log-panel">
+        <p class="text-muted">Logs will appear here...</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function fetchLogs() {
+            fetch("/logs")
+                .then(response => response.json())
+                .then(data => {
+                    const logContainer = document.getElementById("logs-container");
+                    logContainer.innerHTML = ""; // Clear previous logs
+                    data.logs.forEach(log => {
+                        const logEntry = document.createElement("p");
+                        logEntry.textContent = log;
+                        logEntry.classList.add("log-entry");
+                        logContainer.appendChild(logEntry);
+                    });
+                    logContainer.scrollTop = logContainer.scrollHeight; // Auto scroll
+                })
+                .catch(err => console.error("Error fetching logs:", err));
+        }
+
+        setInterval(fetchLogs, 2000); // Fetch logs every 2 seconds
+    });
+</script>
+
         </main>
     </div>
 

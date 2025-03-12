@@ -355,20 +355,5 @@ nav a:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.log-panel {
-    background: #1e1e1e;
-    color: #ffffff;
-    font-family: monospace;
-    font-size: 0.9rem;
-    padding: 10px;
-    border-radius: 5px;
-    height: 200px;
-    overflow-y: auto;
-    border: 1px solid #444;
-}
 
-.log-entry {
-    margin-bottom: 4px;
-    white-space: pre-wrap; /* Keeps log formatting */
-}
 

@@ -1,177 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Maps Scraper</title>
-    <link rel="stylesheet" href="/static/css/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.6/htmx.min.js"></script>
-</head>
-<body>
-    <div class="app-container">
-        <header>
-            <h1>Google Maps Scraper</h1>
-            <nav>
-                <a href="/api/docs" target="_blank" rel="noopener noreferrer">API Documentation</a>
-            </nav>
-            <div class="github-section">
-                <p>If you find this tool useful, please consider starring our repository: </p>
-                <a href="https://github.com/melogabriel/google-maps-scraper" target="_blank" rel="noopener noreferrer" class="github-button">
-                <svg height="16" width="16" viewBox="0 0 16 16">
-                    <path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"/>
-                  </svg>
-                  Star on GitHub
-                </a>
-           
-
-        </header>
-        <main>
-            <div class="sidebar">
-                <div id="error-container" class="error-message"></div>
-                <form 
-                    hx-post="/scrape" 
-                    hx-target="#job-table tbody" 
-                    hx-swap="beforeend"
-                    hx-indicator="#spinner"
-                    hx-on::before-request="document.getElementById('error-container').innerHTML = ''"
-                    hx-on::after-request="if(!event.detail.successful) document.getElementById('error-container').innerHTML = event.detail.xhr.responseText"
-                >
-                    
-                    <fieldset>
-                        <legend>Job Details</legend>
-                        <div class="form-group">
-                            <label for="name">Job Name:</label>
-                            <input type="text" id="name" name="name" value="{{.Name}}">
-                        </div>
-                        <div class="form-group">
-                            <label for="keywords">Keywords:</label>
-                            <textarea id="keywords" name="keywords" rows="10">{{ .KeywordsString }}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="lang">Language:</label>
-                            <input type="text" id="lang" name="lang" value="{{.Language}}">
-                        </div>
-                    </fieldset>
-                    
-                    <details class="expandable-section">
-                        <summary>Location Settings</summary>
-                        <fieldset>
-                            <div class="form-group">
-                                <label for="zoom">Zoom:</label>
-                                <input type="number" id="zoom" name="zoom" value="{{.Zoom}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="latitude">Latitude:</label>
-                                <input type="number" step="0.000000000000001" id="latitude" name="latitude" value="{{.Lat}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="longitude">Longitude:</label>
-                                <input type="number" step="0.000000000000001" id="longitude" name="longitude" value="{{.Lon}}">
-                            </div>
-                        </fieldset>
-                    </details>
-                    
-                    <details class="expandable-section">
-                        <summary>Advanced Options</summary>
-                        <fieldset>
-                            <div class="form-group">
-                                <label for="fastmode">Fast Mode (BETA):</label>
-                                <input type="checkbox" id="fastmode" name="fastmode" {{if .FastMode}}checked{{end}}>
-                            </div>
-                            <div class="form-group">
-                                    <label for="radius">Radius (BETA):</label>
-                                    <input type="number" id="radius" name="radius" value="{{.Radius}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="depth">Depth:</label>
-                                <input type="number" step="1" id="depth" name="depth" value="{{.Depth}}">
-                            </div>
-                            <div class="form-group checkbox">
-                                <input type="checkbox" id="email" name="email" {{if .Email}}checked{{end}}>
-                                <label for="email">Fetch Emails</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="maxtime">Max job time:</label>
-                                <input type="text" id="maxtime" name="maxtime" value="{{.MaxTime}}">
-                            </div>
-                        </fieldset>
-                    </details>
-                    <details class="expandable-section">
-                        <summary>Proxies</summary>
-                        <fieldset>
-                            <div class="form-group">
-                                <label for="proxies">Proxies:(one per line)</label>
-                                <p class="text-muted"><small>Examples:<br>
-                                        <p>HTTPS proxy with username/password: https://username:password@myproxy.local:443<p>
-                                        <p>HTTP proxy with username/password: http://username:password@myproxy.local:443<p>
-                                        <p>SOCKS5 proxy without auth: socks5://127.0.0.1:8000</p>
-                                </p>
-
-                                <textarea id="proxies" name="proxies" rows="5">{{.ProxiesString}}</textarea>
-                            </div>
-                        </fieldset>
-                    </details>
-                    
-                    <button type="submit">Start Scraping</button>
-                </form>
-            </div>
-            <div class="content">
-                <div id="spinner" class="spinner"></div>
-                <table id="job-table">
-                    <thead>
-                        <tr>
-                            <th>Job ID</th>
-                            <th>Job Name</th>
-                            <th>Job Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody hx-get="/jobs" hx-trigger="load, every 10s">
-                        <!-- Job rows will be inserted here by HTMX -->
-                    </tbody>
-                </table>
-            </div>
-            <div class="content">
-    <h2>Execution Logs</h2>
-    <div id="logs-container" class="log-panel">
-        <p class="text-muted">Logs will appear here...</p>
-    </div>
-</div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        function fetchLogs() {
-            fetch("/logs")
-                .then(response => response.json())
-                .then(data => {
-                    const logContainer = document.getElementById("logs-container");
-                    logContainer.innerHTML = ""; // Clear previous logs
-                    data.logs.forEach(log => {
-                        const logEntry = document.createElement("p");
-                        logEntry.textContent = log;
-                        logEntry.classList.add("log-entry");
-                        logContainer.appendChild(logEntry);
-                    });
-                    logContainer.scrollTop = logContainer.scrollHeight; // Auto scroll
-                })
-                .catch(err => console.error("Error fetching logs:", err));
-        }
-
-        setInterval(fetchLogs, 2000); // Fetch logs every 2 seconds
-    });
-</script>
-
-        </main>
-    </div>
-
-<script>
-function hideSponsor() {
-    const sponsorSection = document.getElementById('sponsor-section');
-    if (sponsorSection) {
-        sponsorSection.style.display = 'none';
-    }
-}
-</script>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Google Maps Scraper</title>
+     <link rel="stylesheet" href="/static/css/main.css">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.6/htmx.min.js"></script>
+ </head>
+ <body>
+     <div class="app-container">
+         <header>
+             <h1>Google Maps Scraper</h1>
+             <nav>
+                 <a href="/api/docs" target="_blank" rel="noopener noreferrer">API Documentation</a>
+             </nav>
+             <div class="github-section">
+                 <p>If you find this tool useful, please consider starring our repository: </p>
+                 <a href="https://github.com/melogabriel/google-maps-scraper" class="github-button">
+                 <a href="https://github.com/melogabriel/google-maps-scraper" target="_blank" rel="noopener noreferrer" class="github-button">
+                 <svg height="16" width="16" viewBox="0 0 16 16">
+                     <path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"/>
+                   </svg>
+                   Star on GitHub
+                 </a>
+ 
+ 
+         </header>
+         <main>
+             <div class="sidebar">
+                 <div id="error-container" class="error-message"></div>
+                 <form 
+                     hx-post="/scrape" 
+                     hx-target="#job-table tbody" 
+                     hx-swap="beforeend"
+                     hx-indicator="#spinner"
+                     hx-on::before-request="document.getElementById('error-container').innerHTML = ''"
+                     hx-on::after-request="if(!event.detail.successful) document.getElementById('error-container').innerHTML = event.detail.xhr.responseText"
+                 >
+ 
+                     <fieldset>
+                         <legend>Job Details</legend>
+                         <div class="form-group">
+                             <label for="name">Job Name:</label>
+                             <input type="text" id="name" name="name" value="{{.Name}}">
+                         </div>
+                         <div class="form-group">
+                             <label for="keywords">Keywords:</label>
+                             <textarea id="keywords" name="keywords" rows="10">{{ .KeywordsString }}</textarea>
+                         </div>
+                         <div class="form-group">
+                             <label for="lang">Language:</label>
+                             <input type="text" id="lang" name="lang" value="{{.Language}}">
+                         </div>
+                     </fieldset>
+ 
+                     <details class="expandable-section">
+                         <summary>Location Settings</summary>
+                         <fieldset>
+                             <div class="form-group">
+                                 <label for="zoom">Zoom:</label>
+                                 <input type="number" id="zoom" name="zoom" value="{{.Zoom}}">
+                             </div>
+                             <div class="form-group">
+                                 <label for="latitude">Latitude:</label>
+                                 <input type="number" step="0.000000000000001" id="latitude" name="latitude" value="{{.Lat}}">
+                             </div>
+                             <div class="form-group">
+                                 <label for="longitude">Longitude:</label>
+                                 <input type="number" step="0.000000000000001" id="longitude" name="longitude" value="{{.Lon}}">
+                             </div>
+                         </fieldset>
+                     </details>
+ 
+                     <details class="expandable-section">
+                         <summary>Advanced Options</summary>
+                         <fieldset>
+                             <div class="form-group">
+                                 <label for="fastmode">Fast Mode (BETA):</label>
+                                 <input type="checkbox" id="fastmode" name="fastmode" {{if .FastMode}}checked{{end}}>
+                             </div>
+                             <div class="form-group">
+                                     <label for="radius">Radius (BETA):</label>
+                                     <input type="number" id="radius" name="radius" value="{{.Radius}}">
+                             </div>
+                             <div class="form-group">
+                                 <label for="depth">Depth:</label>
+                                 <input type="number" step="1" id="depth" name="depth" value="{{.Depth}}">
+                             </div>
+                             <div class="form-group checkbox">
+                                 <input type="checkbox" id="email" name="email" {{if .Email}}checked{{end}}>
+                                 <label for="email">Fetch Emails</label>
+                             </div>
+                             <div class="form-group">
+                                 <label for="maxtime">Max job time:</label>
+                                 <input type="text" id="maxtime" name="maxtime" value="{{.MaxTime}}">
+                             </div>
+                         </fieldset>
+                     </details>
+                     <details class="expandable-section">
+                         <summary>Proxies</summary>
+                         <fieldset>
+                             <div class="form-group">
+                                 <label for="proxies">Proxies:(one per line)</label>
+                                 <p class="text-muted"><small>Examples:<br>
+                                         <p>HTTPS proxy with username/password: https://username:password@myproxy.local:443<p>
+                                         <p>HTTP proxy with username/password: http://username:password@myproxy.local:443<p>
+                                         <p>SOCKS5 proxy without auth: socks5://127.0.0.1:8000</p>
+                                 </p>
+ 
+                                 <textarea id="proxies" name="proxies" rows="5">{{.ProxiesString}}</textarea>
+                             </div>
+                         </fieldset>
+                     </details>
+ 
+                     <button type="submit">Start Scraping</button>
+                 </form>
+             </div>
+             <div class="content">
+                 <div id="spinner" class="spinner"></div>
+                 <table id="job-table">
+                     <thead>
+                         <tr>
+                             <th>Job ID</th>
+                             <th>Job Name</th>
+                             <th>Job Date</th>
+                             <th>Status</th>
+                             <th>Actions</th>
+                         </tr>
+                     </thead>
+                     <tbody hx-get="/jobs" hx-trigger="load, every 10s">
+                         <!-- Job rows will be inserted here by HTMX -->
+                     </tbody>
+                 </table>
+             </div>
+         </main>
+     </div>
+ 
+ <script>
+ function hideSponsor() {
+     const sponsorSection = document.getElementById('sponsor-section');
+     if (sponsorSection) {
+         sponsorSection.style.display = 'none';
+     }
+ }
+ </script>
+ </body>
+ </html>
 </body>
 </html>

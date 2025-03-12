@@ -10,12 +10,12 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/melogabriel/google-maps-scraper/runner"
-	"github.com/melogabriel/google-maps-scraper/runner/databaserunner"
-	"github.com/melogabriel/google-maps-scraper/runner/filerunner"
-	"github.com/melogabriel/google-maps-scraper/runner/installplaywright"
-	"github.com/melogabriel/google-maps-scraper/runner/lambdaaws"
-	"github.com/melogabriel/google-maps-scraper/runner/webrunner"
+	"github.com/gosom/google-maps-scraper/runner"
+	"github.com/gosom/google-maps-scraper/runner/databaserunner"
+	"github.com/gosom/google-maps-scraper/runner/filerunner"
+	"github.com/gosom/google-maps-scraper/runner/installplaywright"
+	"github.com/gosom/google-maps-scraper/runner/lambdaaws"
+	"github.com/gosom/google-maps-scraper/runner/webrunner"
 )
 
 var (

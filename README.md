@@ -4,9 +4,45 @@
 
 > A free and open-source Google Maps scraper with both command line and web UI options. This tool is easy to use and allows you to extract data from Google Maps efficiently.
 
+Google Maps Scraper is a web-based tool designed to extract detailed business information from Google Maps based on user-defined search parameters. This deployment makes it easier to use compared to the previous fork version, as it is now accessible directly via a web interface without requiring local setup.
+
+## Features
+
+- **Keyword-Based Search**: Input specific keywords to target businesses or places of interest.
+- **Language Selection**: Choose the language for the search results to match regional preferences.
+- **Location Settings**:
+  - **Zoom**: Adjust the zoom level to refine the search area.
+  - **Latitude and Longitude**: Specify geographical coordinates to center the search.
+- **Advanced Options**:
+  - **Fast Mode (BETA)**: Enable faster scraping with potential trade-offs in data accuracy.
+  - **Radius (BETA)**: Define a specific radius for the search area.
+  - **Depth**: Set the depth of search to control the number of results.
+  - **Fetch Emails**: Attempt to retrieve email addresses associated with the businesses.
+  - **Max Job Time**: Limit the maximum time allocated for a scraping task.
+- **Proxy Support**: Configure proxies to manage request routing and avoid potential restrictions.
+
+## Getting Started
+
+To use the Google Maps Scraper:
+
+1. **Access the Application**: Navigate to the [Google Maps Scraper](https://google-maps-scraper-6lcb.onrender.com/) web application.
+2. **Set Up a New Scraping Job**:
+   - **Job Name**: Assign a unique name to your scraping task.
+   - **Keywords**: Enter the search terms relevant to your target data.
+   - **Language**: Select the desired language for the search results.
+   - **Location Settings**: Adjust the zoom level and specify latitude and longitude coordinates to define the search area.
+   - **Advanced Options**: Configure additional settings such as fast mode, search radius, depth, email fetching, and maximum job time.
+   - **Proxies**: If necessary, input proxy details to manage request routing.
+3. **Initiate Scraping**: Click the "Start Scraping" button to commence the data extraction process.
+4. **Monitor Job Status**: View the status of your scraping jobs in the "Job Details" section, which provides information on job ID, name, date, status, and available actions.
+
+## Why This Deployment?
+
+This deployment improves accessibility and ease of use compared to the previous forked version, eliminating the need for local installation or configuration. Users can now run scraping jobs directly from the web without additional setup.
+
 ## What Google maps scraper does
 
-A command line and web based google maps scraper build using 
+Web based google maps scraper build using 
 
 [scrapemate](https://github.com/gosom/scrapemate) web crawling framework.
 
@@ -14,29 +50,6 @@ You can use this repository either as is, or you can use its code as a base and
 customize it to your needs
 
 ![Example GIF](img/example.gif)
-
-### Web UI:
-
-```
-mkdir -p gmapsdata && docker run -v $PWD/gmapsdata:/gmapsdata -p 8080:8080 gosom/google-maps-scraper -data-folder /gmapsdata
-```
-
-Or dowload the [binary](https://github.com/gosom/google-maps-scraper/releases) for your platform and run it.
-
-Note: The results will take at least 3 minutes to appear, even if you add only one keyword. This is the minimum configured runtime.
-
-Note: for MacOS the docker command should not work. **HELP REQUIRED**
-
-
-### Command line:
-
-```
-touch results.csv && docker run -v $PWD/example-queries.txt:/example-queries -v $PWD/results.csv:/results.csv gosom/google-maps-scraper -depth 1 -input /example-queries -results /results.csv -exit-on-inactivity 3m
-```
-
-file `results.csv` will contain the parsed results.
-
-**If you want emails use additionally the `-email` parameter*
 
 ### REST API
 The Google Maps Scraper provides a RESTful API for programmatic management of scraping tasks.
@@ -55,11 +68,9 @@ For detailed API documentation, refer to the OpenAPI 3.0.3 specification availab
 ## 🌟 Support the Project!
 
 If you find this tool useful, consider giving it a **star** on GitHub. 
-Feel free to check out the **Sponsor** button on this repository to see how you can further support the development of this project. 
 Your support helps ensure continued improvement and maintenance.
 
-
-## Features
+## Parameters
 
 - Extracts many data points from google maps
 - Exports the data to CSV, JSON or PostgreSQL 
@@ -213,225 +224,6 @@ In order to define it you can have an input file like:
 ```
 Matsuhisa Athens #!#MyIDentifier
 ```
-
-## Quickstart
-
-### Using docker:
-
-```
-touch results.csv && docker run -v $PWD/example-queries.txt:/example-queries -v $PWD/results.csv:/results.csv gosom/google-maps-scraper -depth 1 -input /example-queries -results /results.csv -exit-on-inactivity 3m
-```
-
-file `results.csv` will contain the parsed results.
-
-**If you want emails use additionally the `-email` parameter**
-
-
-### On your host
-
-(tested only on Ubuntu 22.04)
-
-
-```
-git clone https://github.com/gosom/google-maps-scraper.git
-cd google-maps-scraper
-go mod download
-go build
-./google-maps-scraper -input example-queries.txt -results restaurants-in-cyprus.csv -exit-on-inactivity 3m
-```
-
-Be a little bit patient. In the first run it downloads required libraries.
-
-The results are written when they arrive in the `results` file you specified
-
-**If you want emails use additionally the `-email` parameter**
-
-### Command line options
-
-try `./google-maps-scraper -h` to see the command line options available:
-```
-  -addr string
-        address to listen on for web server (default ":8080")
-  -aws-access-key string
-        AWS access key
-  -aws-lambda
-        run as AWS Lambda function
-  -aws-lambda-chunk-size int
-        AWS Lambda chunk size (default 100)
-  -aws-lambda-invoker
-        run as AWS Lambda invoker
-  -aws-region string
-        AWS region
-  -aws-secret-key string
-        AWS secret key
-  -c int
-        sets the concurrency [default: half of CPU cores] (default 11)
-  -cache string
-        sets the cache directory [no effect at the moment] (default "cache")
-  -data-folder string
-        data folder for web runner (default "webdata")
-  -debug
-        enable headful crawl (opens browser window) [default: false]
-  -depth int
-        maximum scroll depth in search results [default: 10] (default 10)
-  -dsn string
-        database connection string [only valid with database provider]
-  -email
-        extract emails from websites
-  -exit-on-inactivity duration
-        exit after inactivity duration (e.g., '5m')
-  -fast-mode
-        fast mode (reduced data collection)
-  -function-name string
-        AWS Lambda function name
-  -geo string
-        set geo coordinates for search (e.g., '37.7749,-122.4194')
-  -input string
-        path to the input file with queries (one per line) [default: empty]
-  -json
-        produce JSON output instead of CSV
-  -lang string
-        language code for Google (e.g., 'de' for German) [default: en] (default "en")
-  -produce
-        produce seed jobs only (requires dsn)
-  -proxies string
-        comma separated list of proxies to use in the format protocol://user:pass@host:port example: socks5://localhost:9050 or http://user:pass@localhost:9050
-  -radius float
-        search radius in meters. Default is 10000 meters (default 10000)
-  -results string
-        path to the results file [default: stdout] (default "stdout")
-  -s3-bucket string
-        S3 bucket name
-  -web
-        run web server instead of crawling
-  -writer string
-        use custom writer plugin (format: 'dir:pluginName')
-  -zoom int
-        set zoom level (0-21) for search (default 15)
-```
-
-## Using a custom writer
-
-In cases the results need to be written in a custom format or in another system like a db a message queue or basically anything the Go plugin system can be utilized.
-
-Write a Go plugin (see an example in examples/plugins/example_writeR.go) 
-
-Compile it using (for Linux):
-
-```
-go build -buildmode=plugin -tags=plugin -o ~/mytest/plugins/example_writer.so examples/plugins/example_writer.go
-```
-
-and then run the program using the `-writer` argument. 
-
-See an example:
-
-1. Write your plugin (use the examples/plugins/example_writer.go as a reference)
-2. Build your plugin `go build -buildmode=plugin -tags=plugin -o ~/myplugins/example_writer.so plugins/example_writer.go`
-3. Download the lastes [release](https://github.com/gosom/google-maps-scraper/releases/) or build the program
-4. Run the program like `./google-maps-scraper -writer ~/myplugins:DummyPrinter -input example-queries.txt`
-
-
-### Plugins and Docker
-
-It is possible to use the docker image and use tha plugins.
-In such case make sure that the shared library is build using a compatible GLIB version with the docker image.
-otherwise you will encounter an error like:
-
-```
-/lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /plugins/example_writer.so)
-```
-
-
-## Using Database Provider (postgreSQL)
-
-For running in your local machine:
-
-```
-docker-compose -f docker-compose.dev.yaml up -d
-```
-
-The above starts a PostgreSQL container and creates the required tables
-
-to access db:
-
-```
-psql -h localhost -U postgres -d postgres
-```
-
-Password is `postgres`
-
-Then from your host run:
-
-```
-go run main.go -dsn "postgres://postgres:postgres@localhost:5432/postgres" -produce -input example-queries.txt --lang el
-```
-
-(configure your queries and the desired language)
-
-This will populate the table `gmaps_jobs` . 
-
-you may run the scraper using:
-
-```
-go run main.go -c 2 -depth 1 -dsn "postgres://postgres:postgres@localhost:5432/postgres"
-```
-
-If you have a database server and several machines you can start multiple instances of the scraper as above.
-
-### Kubernetes
-
-You may run the scraper in a kubernetes cluster. This helps to scale it easier.
-
-Assuming you have a kubernetes cluster and a database that is accessible from the cluster:
-
-1. First populate the database as shown above
-2. Create a deployment file `scraper.deployment`
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: google-maps-scraper
-spec:
-  selector:
-    matchLabels:
-      app: google-maps-scraper
-  replicas: {NUM_OF_REPLICAS}
-  template:
-    metadata:
-      labels:
-        app: google-maps-scraper
-    spec:
-      containers:
-      - name: google-maps-scraper
-        image: gosom/google-maps-scraper:v0.9.3
-        imagePullPolicy: IfNotPresent
-        args: ["-c", "1", "-depth", "10", "-dsn", "postgres://{DBUSER}:{DBPASSWD@DBHOST}:{DBPORT}/{DBNAME}", "-lang", "{LANGUAGE_CODE}"]
-```
-
-Please replace the values or the command args accordingly 
-
-Note: Keep in mind that because the application starts a headless browser it requires CPU and memory. 
-Use an appropriate kubernetes cluster
-
-## Telemetry
-
-Anonymous usage statistics are collected for debug and improvement reasons. 
-You can opt out by setting the env variable `DISABLE_TELEMETRY=1`
-
-## Performance
-
-Expected speed with concurrency of 8 and depth 1 is 120 jobs/per minute.
-Each search is 1 job + the number or results it contains.
-
-Based on the above: 
-if we have 1000 keywords to search with each contains 16 results => 1000 * 16 = 16000 jobs.
-
-We expect this to take about 16000/120 ~ 133 minutes ~ 2.5 hours
-
-If you want to scrape many keywords then it's better to use the Database Provider in
-combination with Kubernetes for convenience and start multiple scrapers in more than 1 machines.
 
 ## References
 

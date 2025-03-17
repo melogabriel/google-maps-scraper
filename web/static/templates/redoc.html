@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>API Documentation</title>
-    <meta charset="utf-8"/>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
-  </head>
-  <body>
+    
+    <title>API Documentation</title>
+    <meta name="description" content="Comprehensive API documentation with ReDoc">
+    <meta name="author" content="Your Company Name">
+    
+    <!-- Preconnect for faster Google Fonts loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700&display=swap" rel="stylesheet">
+</head>
+<body>
     <redoc spec-url="/static/spec/spec.yaml"></redoc>
-    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
-  </body>
+
+    <!-- Load Redoc asynchronously for better performance -->
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js" async></script>
+</body>
 </html>

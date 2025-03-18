@@ -15,13 +15,13 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     line-height: 1.6;
     color: var(--color-text);
     background-color: var(--color-background);
     margin: 0;
     padding: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -39,8 +39,24 @@ header {
     text-align: center;
 }
 
+nav {
+    margin: 10px 0;
+}
+
+nav a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: var(--color-primary-light);
+    text-decoration: underline;
+}
+
 h1 {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 600;
     color: var(--color-primary);
     margin: 0;
@@ -48,8 +64,15 @@ h1 {
 
 .github-section {
     display: flex;
+    align-items: center;
     justify-content: center;
-    margin-top: 12px;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.github-section p {
+    margin: 0;
+    font-size: 14px;
 }
 
 .github-button {
@@ -57,16 +80,18 @@ h1 {
     align-items: center;
     background-color: var(--color-sponsor);
     color: white;
-    padding: 10px 16px;
+    padding: 8px 14px;
     border-radius: 6px;
     font-size: 14px;
     text-decoration: none;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .github-button:hover {
     background-color: var(--color-sponsor-hover);
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .github-button svg {
@@ -80,9 +105,9 @@ main {
 }
 
 .sidebar {
-    width: 280px;
+    width: 320px;
     background-color: var(--color-surface);
-    padding: 20px;
+    padding: 24px;
     overflow-y: auto;
     border-right: 1px solid var(--color-border);
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
@@ -95,27 +120,68 @@ main {
     background-color: var(--color-background);
 }
 
+/* Form styling */
 form {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 22px;
+}
+
+fieldset {
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 16px;
+    margin: 0;
+}
+
+legend {
+    font-weight: 600;
+    padding: 0 8px;
+    color: var(--color-primary);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--color-text);
 }
 
 input[type="text"],
 input[type="number"],
 textarea {
     width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
     border: 1px solid var(--color-border);
     border-radius: 5px;
     font-size: 14px;
-    transition: border 0.2s ease-in-out;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+input[type="checkbox"] + label {
+    display: inline-block;
+    margin-bottom: 0;
 }
 
 input:focus,
 textarea:focus {
     border-color: var(--color-primary);
     outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 59, 59, 0.1);
 }
 
 button {
@@ -125,58 +191,251 @@ button {
     padding: 12px 18px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 500;
     transition: all 0.3s ease;
 }
 
 button:hover {
     background-color: var(--color-primary-light);
     transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Table styling */
 table {
     width: 100%;
     border-collapse: collapse;
     background-color: var(--color-surface);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 th, td {
     text-align: left;
-    padding: 14px;
+    padding: 14px 16px;
     border-bottom: 1px solid var(--color-border);
 }
 
 th {
     font-weight: 600;
-    background-color: var(--color-surface);
+    background-color: #f8f8f8;
+    color: var(--color-text);
+    font-size: 14px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background-color: #f9f9f9;
 }
 
 .status-indicator {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 16px;
     font-size: 12px;
     font-weight: 600;
+    text-align: center;
+    min-width: 80px;
 }
 
 .status-ok { background-color: var(--color-success); color: white; }
 .status-pending, .status-working { background-color: var(--color-warning); color: black; }
 .status-failed, .status-error { background-color: var(--color-error); color: white; }
 
-@media (max-width: 768px) {
+/* Expandable sections */
+.expandable-section {
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.expandable-section summary {
+    padding: 12px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid transparent;
+    transition: background-color 0.2s ease;
+}
+
+.expandable-section summary:hover {
+    background-color: #ececec;
+}
+
+.expandable-section[open] summary {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.expandable-section fieldset {
+    border: none;
+    padding: 16px;
+    margin: 0;
+}
+
+/* Button styling */
+.button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-right: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.download-button {
+    background-color: #2196f3;
+    color: white;
+}
+
+.download-button:hover {
+    background-color: #0d8aee;
+    transform: translateY(-1px);
+}
+
+.delete-button {
+    background-color: var(--color-error);
+    color: white;
+    font-size: 13px;
+    padding: 6px 12px;
+}
+
+.delete-button:hover {
+    background-color: #b71c1c;
+}
+
+/* Help text styling */
+.text-muted {
+    color: var(--color-text-light);
+    font-size: 13px;
+    margin: 6px 0;
+}
+
+code {
+    background-color: #f1f1f1;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: monospace;
+}
+
+ul {
+    padding-left: 20px;
+    margin: 8px 0;
+}
+
+li {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+/* Error message */
+.error-message {
+    color: var(--color-error);
+    background-color: rgba(211, 47, 47, 0.1);
+    border-left: 4px solid var(--color-error);
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: none;
+}
+
+.error-message:not(:empty) {
+    display: block;
+}
+
+/* Loading spinner */
+.spinner {
+    display: none;
+    width: 40px;
+    height: 40px;
+    margin: 20px auto;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid var(--color-primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.htmx-request .spinner {
+    display: block;
+}
+
+/* Empty table state */
+tbody:empty::after {
+    content: "No jobs available yet. Start a new scraping job to see results here.";
+    display: block;
+    text-align: center;
+    padding: 30px;
+    color: var(--color-text-light);
+    font-style: italic;
+    grid-column: 1 / -1;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
     main {
         flex-direction: column;
     }
+    
     .sidebar {
-        width: 100%;
+        width: auto;
         border-right: none;
         border-bottom: 1px solid var(--color-border);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
+    
     .content {
         padding: 20px;
+    }
+    
+    .github-section {
+        flex-direction: column;
+    }
+    
+    table {
+        font-size: 14px;
+    }
+    
+    th, td {
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 15px;
+    }
+    
+    .sidebar, .content {
+        padding: 15px;
+    }
+    
+    th, td {
+        padding: 8px 10px;
+    }
+    
+    .status-indicator {
+        min-width: 60px;
+        padding: 4px 8px;
+    }
+    
+    .button, .delete-button {
+        padding: 5px 10px;
+        font-size: 12px;
     }
 }

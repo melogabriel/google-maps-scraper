@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Maps Scraper</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="/static/css/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.6/htmx.min.js"></script>
 </head>
@@ -34,22 +35,22 @@
                     hx-target="#job-table tbody" 
                     hx-swap="beforeend"
                     hx-indicator="#spinner"
-                    hx-on::before-request="document.getElementById('error-container').innerHTML = ''"
-                    hx-on::after-request="if(!event.detail.successful) document.getElementById('error-container').innerHTML = event.detail.xhr.responseText"
+                    hx-on::before-request="document.getElementById('error-container').innerHTML = ''; document.querySelector('button[type=submit]').disabled = true;"
+                    hx-on::after-request="document.querySelector('button[type=submit]').disabled = false; if(!event.detail.successful) document.getElementById('error-container').innerHTML = event.detail.xhr.responseText"
                 >
                     <fieldset>
                         <legend>Job Details</legend>
                         <div class="form-group">
                             <label for="name">Job Name:</label>
-                            <input type="text" id="name" name="name" value="{{.Name}}" required>
+                            <input type="text" id="name" name="name" value="{{.Name}}" placeholder="Enter a descriptive name" required>
                         </div>
                         <div class="form-group">
                             <label for="keywords">Keywords:</label>
-                            <textarea id="keywords" name="keywords" rows="5" required>{{ .KeywordsString }}</textarea>
+                            <textarea id="keywords" name="keywords" rows="5" placeholder="Enter keywords, one per line" required>{{ .KeywordsString }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="lang">Language:</label>
-                            <input type="text" id="lang" name="lang" value="{{.Language}}" required>
+                            <input type="text" id="lang" name="lang" value="{{.Language}}" placeholder="e.g. en, es, fr" required>
                         </div>
                     </fieldset>
 
@@ -58,15 +59,15 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="zoom">Zoom:</label>
-                                <input type="number" id="zoom" name="zoom" value="{{.Zoom}}" min="1" max="20">
+                                <input type="number" id="zoom" name="zoom" value="{{.Zoom}}" min="1" max="20" placeholder="1-20">
                             </div>
                             <div class="form-group">
                                 <label for="latitude">Latitude:</label>
-                                <input type="number" step="0.0000001" id="latitude" name="latitude" value="{{.Lat}}">
+                                <input type="number" step="0.0000001" id="latitude" name="latitude" value="{{.Lat}}" placeholder="e.g. 40.7128">
                             </div>
                             <div class="form-group">
                                 <label for="longitude">Longitude:</label>
-                                <input type="number" step="0.0000001" id="longitude" name="longitude" value="{{.Lon}}">
+                                <input type="number" step="0.0000001" id="longitude" name="longitude" value="{{.Lon}}" placeholder="e.g. -74.0060">
                             </div>
                         </fieldset>
                     </details>
@@ -80,11 +81,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="radius">Radius (BETA):</label>
-                                <input type="number" id="radius" name="radius" value="{{.Radius}}">
+                                <input type="number" id="radius" name="radius" value="{{.Radius}}" placeholder="e.g. 10000">
                             </div>
                             <div class="form-group">
                                 <label for="depth">Depth:</label>
-                                <input type="number" step="1" id="depth" name="depth" value="{{.Depth}}">
+                                <input type="number" step="1" id="depth" name="depth" value="{{.Depth}}" placeholder="e.g. 10">
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" id="email" name="email" {{if .Email}}checked{{end}}>
@@ -92,7 +93,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="maxtime">Max job time:</label>
-                                <input type="text" id="maxtime" name="maxtime" value="{{.MaxTime}}">
+                                <input type="text" id="maxtime" name="maxtime" value="{{.MaxTime}}" placeholder="e.g. 1h, 30m">
                             </div>
                         </fieldset>
                     </details>
@@ -108,7 +109,7 @@
                                     <li>HTTP proxy with username/password: <code>http://username:password@myproxy.local:443</code></li>
                                     <li>SOCKS5 proxy without auth: <code>socks5://127.0.0.1:8000</code></li>
                                 </ul>
-                                <textarea id="proxies" name="proxies" rows="3">{{.ProxiesString}}</textarea>
+                                <textarea id="proxies" name="proxies" rows="3" placeholder="Enter proxies, one per line">{{.ProxiesString}}</textarea>
                             </div>
                         </fieldset>
                     </details>
@@ -138,12 +139,38 @@
     </div>
 
     <script>
-        function hideSponsor() {
-            const sponsorSection = document.getElementById('sponsor-section');
-            if (sponsorSection) {
-                sponsorSection.style.display = 'none';
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide sponsor section if it exists
+            function hideSponsor() {
+                const sponsorSection = document.getElementById('sponsor-section');
+                if (sponsorSection) {
+                    sponsorSection.style.display = 'none';
+                }
             }
-        }
+            
+            // Initialize expandable sections
+            const details = document.querySelectorAll('details.expandable-section');
+            details.forEach(detail => {
+                detail.addEventListener('toggle', function() {
+                    if (this.open) {
+                        details.forEach(otherDetail => {
+                            if (otherDetail !== this) {
+                                otherDetail.open = false;
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // Initialize form
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function() {
+                const submitButton = this.querySelector('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.innerHTML = '<span class="spinner-small"></span> Processing...';
+                }
+            });
+        });
     </script>
 </body>
 </html>

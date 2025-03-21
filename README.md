@@ -5,7 +5,7 @@
 
 > A free and open-source Google Maps scraper with both command line and web UI options. This tool is easy to use and allows you to extract data from Google Maps efficiently.
 
-[Google Maps Scraper](https://google-maps-scraper-6lcb.onrender.com/) is a web-based tool designed to extract detailed business information from Google Maps based on user-defined search parameters. This deployment makes it easier to use compared to the previous fork version, as it is now accessible directly via a web interface without requiring local setup.
+[Google Maps Scraper](https://google-maps-scraper.up.railway.app) is a web-based tool designed to extract detailed business information from Google Maps based on user-defined search parameters. This deployment makes it easier to use compared to the previous fork version, as it is now accessible directly via a web interface without requiring local setup.
 
 ## Features
 
@@ -26,7 +26,7 @@
 
 How scrape Google Maps data:
 
-1. **Access the Application**: Navigate to the [Google Maps Scraper](https://google-maps-scraper-6lcb.onrender.com/) web application.
+1. **Access the Application**: Navigate to the [Google Maps Scraper](https://google-maps-scraper.up.railway.app) web application.
 2. **Set Up a New Scraping Job**:
    - **Job Name**: Assign a unique name to your scraping task.
    - **Keywords**: Enter the search terms relevant to your target data.

@@ -41,7 +41,8 @@ GoogleMapsScraper is a lightweight tool that lets you scrape business data direc
 Prefer not to install? You can try the **online version** here:  
 🔗 [https://google-maps-scraper-6lcb.onrender.com/](https://google-maps-scraper-6lcb.onrender.com/)
 
-> ⚠️ Note: The web version may be slower due to server resource limits. For the best performance, use the macOS app locally.
+> [!NOTE]
+> The web version may be slower due to server resource limits. For the best performance, use the macOS app locally.
 
 ---
 

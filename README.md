@@ -1,4 +1,4 @@
-# 🚀 GoogleMapsScraper v1.0.0 (macOS Pre-release)
+# GoogleMapsScraper v1.0.0 (macOS Pre-release)
 
 ![Release](https://img.shields.io/badge/version-v1.0.0-blue)
 ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
@@ -16,7 +16,7 @@ GoogleMapsScraper is a lightweight tool that lets you scrape business data direc
 
 ## 📸 Preview
 
-![App Screenshot](https://github.com/melogabriel/google-maps-scraper/blob/b84cd8f8ca7b9b4abfadf47defd236f4a8187536/screenshot.png) <!-- Replace with actual screenshot URL -->
+![App Screenshot](https://github.com/melogabriel/google-maps-scraper/blob/b84cd8f8ca7b9b4abfadf47defd236f4a8187536/screenshot.png)
 
 ---
 
@@ -46,7 +46,7 @@ Prefer not to install? You can try the **online version** here:
 
 ---
 
-## 🍎 macOS Version Notes
+## MacOS Version Notes
 
 - 🖥️ Wrapped in a native `.app` bundle
 - 🌐 Runs a local server and opens in your default browser

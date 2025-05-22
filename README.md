@@ -67,10 +67,9 @@ Prefer not to install? You can try the **online version** here:
 
 ---
 
-## ⚠️ Pre-release Warning
-
-This is an **unofficial pre-release** build for macOS.  
-If you encounter any issues or bugs, please report them in the [Issues tab](https://github.com/melogabriel/google-maps-scraper/issues).
+> [!Warning]
+> This is an **unofficial pre-release** build for macOS.  
+> If you encounter any issues or bugs, please report them in the [Issues tab](https://github.com/melogabriel/google-maps-scraper/issues).
 
 ---
 

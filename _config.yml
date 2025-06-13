@@ -1,0 +1,9 @@
+title: Google Maps Scraper
+remote_theme: jekyll/minima@8106bd4
+
+plugins:
+  - jekyll-seo-tag
+google_analytics:
+minima:
+  skin: auto
+  hide_site_feed_link: true

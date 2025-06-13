@@ -16,7 +16,7 @@ GoogleMapsScraper is a lightweight tool that lets you scrape business data direc
 
 ## Preview
 
-![App Screenshot](https://github.com/melogabriel/google-maps-scraper/blob/b84cd8f8ca7b9b4abfadf47defd236f4a8187536/screenshot.png)
+![App Screenshot](screenshot.png)
 
 ---
 

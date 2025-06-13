@@ -1,4 +1,4 @@
-# GoogleMapsScraper v1.0.0 (macOS Pre-release)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=000000&width=435&lines=GoogleMapsScraper+v1.0.0)](https://git.io/typing-svg)
 
 ![Release](https://img.shields.io/badge/version-v1.0.0-blue)
 ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
